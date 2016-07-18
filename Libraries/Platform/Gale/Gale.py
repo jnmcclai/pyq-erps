@@ -133,7 +133,7 @@ class Gale():
             | protocol_rate | <string> | connection protocol rate [Optical-Generic] |
 
         Note: if ports are already connected (even just bound by the device) will not work - good to poll this as well and 
-        disconnect as needed
+        disconnect as needed.  Here default force to 1 to override connection
         """
         if type(paramDict) is not dict:
             raise AssertionError('paramDict is not dictionary')
@@ -171,7 +171,7 @@ class Gale():
         if paramDict.has_key('force') and paramDict['force'] is not None:
             force = paramDict['force']
         else:
-            force = 0  
+            force = 1 
 
         if paramDict.has_key('retime') and paramDict['retime'] is not None:
             retime = paramDict['retime']
@@ -190,14 +190,14 @@ class Gale():
 if __name__ == "__main__":
     
     #initialize some variables
-    server = "1.1.1.1"
+    server = "<1.2.3.4"
     port = "8080"
     username = "<username>"
     password = "<password>"
-    rsvn_id = "12345"
+    rsvn_id = "62942"
     endpoint_a = "E43_ERPS_N5 1"
     endpoint_b = "E43_ERPS_N6 2"
-    connection_id = "f95c4d84-91df-43ed-9efe-1c765bee3a54"
+    connection_id = "3a5abeca-991f-4cff-9a79-197843341c5e"
     paramDict = dict()
 
     #create an instance of class
@@ -206,15 +206,35 @@ if __name__ == "__main__":
     instance.source_lab_manager()
     #login
     instance.login()
-    #grab the reservation connections
-    rsvns = instance.get_reservation_connections()
-    #print the reservation connections
-    print rsvns
-    #disable a connection
-    instance.connection_disable(connection_id)
-    #enable a connection
-    instance.connection_enable(connection_id)
-    #remove a connection
-    instance.connection_remove(endpoint_a, endpoint_b)
-    #add a connection
-    instance.connection_add(endpoint_a, endpoint_b, paramDict)
+    # #grab the reservation connections
+    # rsvns = instance.get_reservation_connections()
+    # #print the reservation connections
+    # print rsvns
+    # #disable a connection
+    # instance.connection_disable(connection_id)
+    # #enable a connection
+    # instance.connection_enable(connection_id)
+    # #remove a connection
+    # instance.connection_remove(endpoint_a, endpoint_b)
+    # #add a connection
+    # instance.connection_add(endpoint_a, endpoint_b, paramDict)
+
+    ####################
+    #switching erps ring
+    ####################
+    # instance.connection_remove("E43_ERPS_N5 1", "E43_ERPS_N6 2")
+    # time.sleep(10)
+    # instance.connection_remove("E44_ERPS_N2 2", "E45_ERPS_N13 1")
+    # time.sleep(10)
+    # instance.connection_add("E43_ERPS_N5 1", "E44_ERPS_N2 2", paramDict)
+
+    # ####################
+    # #revert
+    # ####################
+    # time.sleep(10)
+    # instance.connection_remove("E43_ERPS_N5 1", "E44_ERPS_N2 2")
+    # time.sleep(10)
+    # instance.connection_add("E43_ERPS_N5 1", "E43_ERPS_N6 2", paramDict)
+    # time.sleep(10)
+    # instance.connection_add("E44_ERPS_N2 2", "E45_ERPS_N13 1", paramDict)
+    
